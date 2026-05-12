@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FinancialPy{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1b1c1d;
+            color: #ffffff;
+        }
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #1b1c1d;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        .top-bar h1 {
+            display: flex;
+            align-items: center;
+            margin: 0;
+        }
+        .top-bar h1 .pi-icon {
+            color: cyan;
+            font-family: 'Arial', sans-serif;
+            font-size: 1.25em;
+        }
+        .top-bar a {
+            margin: 0;
+        }
+        .ui.container {
+            margin-top: 80px;
+            margin-bottom: 100px;
+        }
+        .financialpy-link, .financialpy-link:hover{
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <h1>
+            <a href="/" class="financialpy-link">
+                <span class="pi-icon">π</span> FinancialPy
+            </a>
+        </h1>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="ui label" style="background-color: white; color: black; font-size: 16px; padding: 10px;">
+                Virtual Balance: ${{ balance }}
+            </div>
+            {% if not is_portfolio_page %}
+                <a href="/portfolio" class="ui teal button">Portfolio</a>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <!-- Main Content -->
+    <div class="ui container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

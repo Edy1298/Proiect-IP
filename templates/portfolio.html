@@ -1,0 +1,111 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    {% set is_portfolio_page = true %}
+    <style>
+        body {
+            background-color: #1b1c1d;
+            color: #ffffff;
+            height: initial;
+        }
+        h1, h2 {
+            color: #ffffff;
+        }
+        .ui.table {
+            background-color: #222;
+            color: #ffffff;
+        }
+        .ui.table thead th {
+            background-color: #333;
+        }
+        .ui.button {
+            margin: 0 5px;
+        }
+
+        .summary-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .summary-box {
+            flex: 1;
+            margin: 0 10px;
+            padding: 15px;
+            background-color: #333;
+            border: 2px solid cyan;
+            border-radius: 8px;
+            text-align: center;
+            color: cyan;
+        }
+
+        .summary-box h2 {
+            margin: 0;
+            font-size: 18px;
+    </style>
+    <div class="ui container">
+        <h1>
+            <a href="/" style="color: cyan;">Stocks</a>
+            <i class="angle double right icon"></i>
+            Portfolio
+        </h1>
+
+        <!-- Portfolio Section -->
+        <h2>Your Portfolio</h2>
+        <!-- Summary Section -->
+        <div class="summary-container">
+            <div class="summary-box">
+                <h2 id="total_invested">Total Invested Value: </h2>
+            </div>
+            <div class="summary-box">
+                <h2 id="total_worth">Total Portfolio Value: </h2>
+            </div>
+        </div>
+        <table class="ui striped inverted celled table">
+            <thead>
+                <tr>
+                    <th>Symbol</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Price Bought</th>
+                    <th>Current Price</th>
+                    <th>Relative Difference</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stock, price in stocks_prices %}
+                <tr>
+                    <td>{{ stock.symbol }}</td>
+                    <td>{{ stock.name }}</td>
+                    <td>{{ stock.quantity }}</td>
+                    <td class="price_bought">{{ stock.bought_price }}</td>
+                    <td class="curr_price">{{ price.close }}</td>
+                    <td class="rel_diff"></td>
+                    <td>
+                        <a href="/stock/{{ stock.symbol }}" class="ui purple button">Go to {{ stock.symbol }}</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script>
+        let curr_price, bought_price, percentage_diff, quantity, idx = 0, stocks_worth = 0;
+        {% for stock, price in stocks_prices %}
+            bought_price = parseFloat("{{ stock.bought_price }}");
+            curr_price = parseFloat("{{ price.close }}");
+            quantity = parseInt("{{ stock.quantity }}");
+            // calculate percentage difference and round it to 3 digits
+            percentage_diff = ((curr_price - bought_price) / bought_price * 100).toFixed(3);
+            // round total price to 2 digits
+            document.getElementsByClassName("price_bought")[idx].innerHTML = (bought_price * quantity).toFixed(2);
+            document.getElementsByClassName("curr_price")[idx].innerHTML = (curr_price * quantity).toFixed(2);
+            document.getElementsByClassName("rel_diff")[idx].innerHTML = percentage_diff + "%";
+            stocks_worth += curr_price * quantity;
+            idx++;
+        {% endfor %}
+        document.getElementById("total_invested").innerHTML = "Total Invested Value: " + stocks_worth.toFixed(2);
+        document.getElementById("total_worth").innerHTML = "Total Portfolio Value: " + (stocks_worth + {{ balance }}).toFixed(2);
+    </script>
+{% endblock %}
