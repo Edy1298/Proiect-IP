@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}Login - FinancialPy{% endblock %}
+
+{% block content %}
+<div class="ui middle aligned center aligned grid" style="min-height: 60vh;">
+  <div class="column" style="max-width: 450px;">
+    <h2 class="ui teal image header">
+      <div class="content">
+        Log-in to your account
+      </div>
+    </h2>
+    <form class="ui large form" method="POST">
+      <div class="ui stacked segment" style="background-color: #212121; border: 1px solid #444;">
+        
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="ui error message" style="display: block;">
+              <ul class="list">
+                {% for message in messages %}
+                  <li>{{ message }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="user icon"></i>
+            <input type="text" name="username" placeholder="Username" required>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="lock icon"></i>
+            <input type="password" name="password" placeholder="Password" required>
+          </div>
+        </div>
+        <button type="submit" class="ui fluid large teal submit button">Login</button>
+      </div>
+    </form>
+
+    <div class="ui message" style="background-color: #1b1c1d; border: 1px solid #444; color: white;">
+      New to us? <a href="{{ url_for('register') }}" style="color: #00b5ad;">Sign Up</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

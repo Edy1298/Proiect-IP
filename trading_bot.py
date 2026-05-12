@@ -39,6 +39,12 @@ def predict_price_trend(symbol):
     candles = get_candles(symbol)
     closes = [candle["close"] for candle in candles]
     volumes = [candle["volume"] for candle in candles]
+    
+    if not closes or len(closes) < 2:
+        return {
+            'trend': "Neutral (No data)",
+            'patterns': ["Insufficient data to analyze"]
+        }
 
     trend = "Increasing" if closes[0] > closes[-1] else "Decreasing"
 

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FinancialPy{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1b1c1d;
+            color: #ffffff;
+        }
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #1b1c1d;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        .top-bar h1 {
+            display: flex;
+            align-items: center;
+            margin: 0;
+        }
+        .top-bar h1 .pi-icon {
+            color: cyan;
+            font-family: 'Arial', sans-serif;
+            font-size: 1.25em;
+        }
+        .top-bar a {
+            margin: 0;
+        }
+        .ui.container {
+            margin-top: 80px;
+            margin-bottom: 100px;
+        }
+        .financialpy-link, .financialpy-link:hover{
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <h1>
+            <a href="{{ url_for('index') }}" class="financialpy-link">
+                <span class="pi-icon">π</span> FinancialPy
+            </a>
+        </h1>
+
+        <div style="display: flex; align-items: center; gap: 15px;">
+            {% if current_user.is_authenticated %}
+                <div class="ui labeled button" tabindex="0">
+                    <div class="ui basic white button" style="background: white !important; color: black !important;">
+                        <i class="wallet icon"></i> Balance
+                    </div>
+                    <a class="ui basic left pointing label" style="background: #fbbd08 !important; color: black !important; border: none;">
+                        ${{ "%.2f"|format(current_user.balance) }}
+                    </a>
+                </div>
+
+                {% if request.endpoint == 'portfolio' %}
+                    <a href="{{ url_for('index') }}" class="ui blue button">
+                        <i class="home icon"></i> Market
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('portfolio') }}" class="ui teal button">
+                        <i class="chart line icon"></i> Portfolio
+                    </a>
+                {% endif %}
+
+                <a href="{{ url_for('logout') }}" class="ui animated fade red button" tabindex="0">
+                    <div class="visible content"><i class="sign out icon"></i></div>
+                    <div class="hidden content">Logout</div>
+                </a>
+                
+            {% else %}
+                <a href="{{ url_for('login') }}" class="ui primary button">Login</a>
+                <a href="{{ url_for('register') }}" class="ui basic inverted button">Register</a>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <!-- Main Content -->
+    <div class="ui container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

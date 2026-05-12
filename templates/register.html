@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %}Register - FinancialPy{% endblock %}
+
+{% block content %}
+<div class="ui middle aligned center aligned grid" style="min-height: 60vh;">
+  <div class="column" style="max-width: 450px;">
+    <h2 class="ui blue image header">
+      <div class="content">
+        Create a New Account
+      </div>
+    </h2>
+    <form class="ui large form" method="POST">
+      <div class="ui stacked segment" style="background-color: #212121; border: 1px solid #444;">
+        
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="ui warning message" style="display: block;">
+              <p>{{ messages[0] }}</p>
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="user icon"></i>
+            <input type="text" name="username" placeholder="Choose a Username" required>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="lock icon"></i>
+            <input type="password" name="password" placeholder="Choose a Password" required>
+          </div>
+        </div>
+        <button type="submit" class="ui fluid large blue submit button">Create Account</button>
+      </div>
+    </form>
+
+    <div class="ui message" style="background-color: #1b1c1d; border: 1px solid #444; color: white;">
+      Already have an account? <a href="{{ url_for('login') }}" style="color: #2185d0;">Log In</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
